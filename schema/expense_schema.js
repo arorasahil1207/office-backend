@@ -9,7 +9,9 @@ var expenseSchema = new Schema({
     },
     expenseCategory:{
         type:String,
-        enum:['Food','Travel','Miscellaneous','Automobile','Mobile','Education','Training'],
+        enum:['Food','Travel','Miscellaneous',
+        'Automobile','Wine','Petrol','Cng',
+        'Mobile','Education','Training','saving','FD','Mutual Funds'],
         required:true
     },
     price:{
