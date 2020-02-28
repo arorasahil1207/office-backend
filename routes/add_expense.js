@@ -100,12 +100,13 @@ expenseRoutes.post('/delete-record',(req,res,next)=>{
 expenseRoutes.post('/update-expense',(req,res,next)=>{
     let id = req.body._id
    console.log(id,'update record id')
+   console.log(req.body , 'data from ui')
     Expense.findByIdAndUpdate(id,{
         email:'sahilarora@live.com',
-         category: req.body.category,
+        expenseCategory: req.body.category,
          price : req.body.price,
         spenton : req.body.spenton,
-         date  : Date.now()
+        dateOfExpense  : Date.now()
     },{new:true})
     .then((response)=>{
         if(!response){
