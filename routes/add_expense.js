@@ -122,6 +122,40 @@ expenseRoutes.post('/update-expense',(req,res,next)=>{
         }
     })
 })
+
+// find data based on category 
+
+expenseRoutes.get('/search-category/:category',(req,res,next)=>{
+    let typeOfCategory = req.params.category
+    Expense.find({expenseCategory:typeOfCategory})
+    .exec()
+    .then((result)=>{
+        if(!result){
+            return res.status(500).json({
+                message:'Not able to filter the result',
+            })
+        }
+        else{
+            Expense.aggregate([ { $match: {
+                $and:[
+                    {expenseCategory:{$eq:typeOfCategory}}
+                ]
+            } }, { $group:
+                { _id : null, sum : { $sum: "$price" } }
+              }])
+            .exec()
+            .then((totalResult)=>{
+                console.log(totalResult)
+                return res.status(200).json({
+                    sum:totalResult,
+                    response:result,
+                   
+                })
+            })
+          
+        }
+    })
+})
 module.exports = expenseRoutes
 
 
