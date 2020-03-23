@@ -23,7 +23,7 @@ expenseRoutes.post('/addexpense',(req,res,next)=>{
     // let date  = Date.now()
 
      //let email = req.body.email; 
-     let email='sahilarora@live.com'
+     let email=req.body.email
     let category= req.body.category
     let price = req.body.price
     let spenton = req.body.spenton
@@ -60,7 +60,8 @@ expenseRoutes.post('/addexpense',(req,res,next)=>{
 
 //this function will retrieve all your expenses
 expenseRoutes.get('/get-expense-list',(req,res,next)=>{
-   Expense.find()
+    
+   Expense.find({email:req.query.email})
    .exec()
    .then((result)=>{
      
