@@ -4,6 +4,7 @@ var mongoose=require('mongoose');
 var config = require('./database/database');
 var userRoutes = require('./routes/user_routes');
 var addExpenseRoute = require('./routes/add_expense');
+var json2xls = require('json2xls');
 var searchExpense = require('./routes/fetch_expenseWRTDate');
 var cors = require('cors');
 
@@ -12,6 +13,7 @@ var app =express();
 //handling middleware like cors or body-parser json..
 app.use(cors())
 app.use(bodyParser.json())
+app.use(json2xls.middleware);
 //importing user routes here 
 app.use(userRoutes);
 //importing expense routes here 
