@@ -57,7 +57,34 @@ expenseRoutes.post('/addexpense',(req,res,next)=>{
     
 
 })
+//this function will find the current month expenses 
+expenseRoutes.get('/get-current-month-expense',(req,res,next)=>{
 
+    var date = new Date(); 
+    var firstDay = new Date(date.getFullYear(), date.getMonth(), 2); 
+    console.log(firstDay)
+    Expense.aggregate([ { $match: {
+        $and:[
+            {email:{$eq:req.query.email},
+            dateOfExpense:{$gte:firstDay}
+        },
+        ]
+    } }, { $group:
+        { _id : null, sum : { $sum: "$price" } }
+      }])
+    .exec()
+    .then((response)=>{
+        return res.status(200).json({
+            message:'This month expenses',
+            result:response
+        })
+    }).catch((err)=>{
+        return res.status(500).json({
+            message:'an error occured while trying to find current month salary',
+            error:err
+        })
+    })
+})
 //this function will retrieve all your expenses
 expenseRoutes.get('/get-expense-list',(req,res,next)=>{
     
