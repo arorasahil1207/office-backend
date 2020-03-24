@@ -11,7 +11,7 @@ var expenseSchema = new Schema({
         type:String,
         enum:['Food','Travel','Miscellaneous',
         'Automobile','Wine','Petrol','Cng',
-        'Mobile','Education','Training','saving','FD','Mutual Funds'],
+        'Mobile','Education','Training','saving','FD','Mutual Funds','stocks'],
         required:true
     },
     price:{
