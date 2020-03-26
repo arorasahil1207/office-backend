@@ -9,48 +9,34 @@ const fs = require('fs')
 var Expense = require('../schema/expense_schema');
 var searchExpense = express.Router();
 
-searchExpense.get('/month-expense',(req,res,next)=>{
-    var date = new Date()
-    var dt = new Date(date.getFullYear(), date.getMonth() ,2).toISOString();
-    var firstDateOfMonth = dt.split('T')[0]
-
-    // Expense.aggregate([ { $match: {
-        
-    //         expenseCategory:{$gte:firstDateOfMonth}
-        
-    // } }, { $group:
-    //     { _id : null, sum : { $sum: "$price" } }
-    //   }])
-    Expense.find(
-        {  expenseCategory:{$gt:dt}}
-    )
-      .exec()
-      .then((response)=>{
-          return res.status(200).json({
-              message:'total expenditure for month '+ dt + ' is',
-              Amount :response
-          })
-      }).catch((error)=>{
-          console.log(error)
-      })
-})
 
 
 
 searchExpense.post('/find-expense',(req,res,next)=>{
     let fromdate = req.body.fromDate
     let enddate = req.body.endDate
-
+    let userEmail = req.body.userEmail
     console.log(req.body)
     console.log(fromdate,'this is from date')
     console.log(enddate ,'this is enddate')
-    Expense.find({
+    // Expense.find({
 
-        "dateOfExpense":{
-            "$gte":new Date(fromdate),
-            "$lte":new Date(enddate)
+    // //     "dateOfExpense":{
+    // //         "$gte":new Date(fromdate),
+    // //         "$lte":new Date(enddate)
+    // //     }
+    // // })
+  
+
+    Expense.aggregate([
+        {
+            $match:{
+                $and:[
+                    {email:{$eq:userEmail},dateOfExpense:{$gte:new Date(fromdate),$lte:new Date(enddate)}}
+                ]
+            }
         }
-    })
+    ])
     .exec()
     .then((result)=>{
         

@@ -1,6 +1,6 @@
 var express = require('express');
 var Expense = require('../schema/expense_schema');
-
+var checkAuth = require('../middlewre/check-auth');
 
 var expenseRoutes = express.Router()
 
@@ -87,7 +87,7 @@ expenseRoutes.get('/get-current-month-expense',(req,res,next)=>{
     })
 })
 //this function will retrieve all your expenses
-expenseRoutes.get('/get-expense-list',(req,res,next)=>{
+expenseRoutes.get('/get-expense-list',checkAuth ,(req,res,next)=>{
     
    Expense.find({email:req.query.email})
    .exec()
